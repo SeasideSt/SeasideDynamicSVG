@@ -1,67 +1,31 @@
 Class {
 	#name : #SVGTextTag,
-	#superclass : #SVGTag,
+	#superclass : #SVGTextBrush,
 	#category : #'SeasideDynamicSVG-Core'
 }
 
-{ #category : #'convencience-length adjust' }
-SVGTextTag >> adjustSpacing [
+{ #category : #'convenience-writing mode' }
+SVGTextTag >> leftToRight [
 
-	self lengthAdjust: 'spacing'
+	self writingMode: 'lr'
 ]
 
-{ #category : #'convencience-length adjust' }
-SVGTextTag >> adjustSpacingAndGlyphs [
+{ #category : #'convenience-writing mode' }
+SVGTextTag >> leftToRightTopToBottom [
 
-	self lengthAdjust: 'spacingAndGlyphs'
+	self writingMode: 'lr-tb'
 ]
 
-{ #category : #accessing }
-SVGTextTag >> font [
-	^ self attributeSetAt: SVGFontAttributeSet
+{ #category : #'convenience-writing mode' }
+SVGTextTag >> rightToLeft [
+
+	self writingMode: 'rl'
 ]
 
-{ #category : #accessing }
-SVGTextTag >> font: aBlock [
-	aBlock value: self font
-]
+{ #category : #'convenience-writing mode' }
+SVGTextTag >> rightToLeftTopToBottom [
 
-{ #category : #accessing }
-SVGTextTag >> lengthAdjust: aString [
-
-	self attributeAt: 'lengthAdjust' put: aString
-]
-
-{ #category : #accessing }
-SVGTextTag >> position: aPoint [
-
-	self x: aPoint x.
-	self y: aPoint y.
-]
-
-{ #category : #accessing }
-SVGTextTag >> rotate: aString [
-
-	self attributeAt: 'rotate' put: aString
-]
-
-{ #category : #accessing }
-SVGTextTag >> shift: aPoint [
-
-	self shiftX: aPoint x.
-	self shiftY: aPoint y.
-]
-
-{ #category : #accessing }
-SVGTextTag >> shiftX: aNumber [
-
-	self attributeAt: 'dx' put: aNumber
-]
-
-{ #category : #accessing }
-SVGTextTag >> shiftY: aNumber [
-
-	self attributeAt: 'dy' put: aNumber
+	self writingMode: 'rl-tb'
 ]
 
 { #category : #accessing }
@@ -70,20 +34,21 @@ SVGTextTag >> tag [
 	^ 'text'
 ]
 
-{ #category : #accessing }
-SVGTextTag >> textLength: aNumber [
+{ #category : #'convenience-writing mode' }
+SVGTextTag >> topToBottom [
 
-	self attributeAt: 'textLength' put: aNumber
+	self writingMode: 'tb'
+]
+
+{ #category : #'convenience-writing mode' }
+SVGTextTag >> topToBottomRightToLeft [
+
+	self writingMode: 'tb-rl'
 ]
 
 { #category : #accessing }
-SVGTextTag >> x: aNumber [
-
-	self attributeAt: 'x' put: aNumber
-]
-
-{ #category : #accessing }
-SVGTextTag >> y: aNumber [
-
-	self attributeAt: 'y' put: aNumber
+SVGTextTag >> writingMode: aString [
+	" also see SVGTextContentAttributeSet, #unicodeBidirectional: and #direction:"
+	
+	self attributeAt: 'writing-mode' put: aString
 ]
