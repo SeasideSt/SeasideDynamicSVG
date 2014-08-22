@@ -19,7 +19,7 @@ SVGXApplication class >> register [
 	| app |
 	^ self path notNil
 		ifTrue: [
-			app := self registerAsApplication: self path.
+			app := WAAdmin register: self asApplicationAt: self path.
 			app addLibrary: SVGUserAgentLibrary.
 			app
 		]
