@@ -4,6 +4,14 @@ Extension { #name : #SVGCanvas }
 SVGCanvas >> jQuery [
 	"A jQuery instance should always carry the WARenderCanvas as a rendererClass and not  the SVGCanvas since otherwise #html: render blocks will get the SVGCanvas to render on, which is _not_ applicable"
 	^ (JQueryClass context: self context)
-		rendererClass: WARenderCanvas;
+		rendererClass: WAHtmlCanvas;
+		yourself
+]
+
+{ #category : #'*SeasideDynamicSVG-JQuery' }
+SVGCanvas >> jQuerySVG [
+	"A jQuery instance should always carry the WARenderCanvas as a rendererClass and not  the SVGCanvas since otherwise #html: render blocks will get the SVGCanvas to render on, which is _not_ applicable"
+	^ (JQueryClass context: self context)
+		rendererClass: SVGCanvas;
 		yourself
 ]
