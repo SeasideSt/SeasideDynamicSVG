@@ -2,7 +2,8 @@ Class {
 	#name : #SVGRenderingTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'session'
+		'session',
+		'requestContext'
 	],
 	#category : #'SeasideDynamicSVG-Tests'
 }
@@ -30,12 +31,18 @@ SVGRenderingTest >> assertRender: aBlock matches: anExpectedString [
 { #category : #private }
 SVGRenderingTest >> createRequestContextForURL: url [
 
-	| requestContext request response codec |
-	request := WARequest method: 'GET' uri: url.
+	| requestContext handlers |
+	requestContext := WARequestContext request: WARequest new response: WAResponse new codec: GRNullCodec new.
+	handlers := requestContext handlers.
+	requestContext
+		initializeWithRequest: ((WARequest method: 'GET' uri: url) setCookies: Array new; yourself)
+		response:  WABufferedResponse new codec: GRNullCodec new.
+	requestContext handlers addAll: handlers.
+	"request := WARequest method: 'GET' uri: url.
 	codec := GRCodec forEncoding: 'UTF-8'.
 	response := WABufferedResponse on: (codec  encoderFor:  (WriteStream on: String new)).
-	requestContext := WARequestContext request: request response: response codec: codec.
-	^ requestContext 
+	requestContext := WARequestContext request: request response: response codec: codec."
+	^ requestContext
 ]
 
 { #category : #private }
@@ -70,17 +77,17 @@ SVGRenderingTest >> sessionClass [
 { #category : #private }
 SVGRenderingTest >> setRequestContextWhile: aBlock [
 
-	| requestContext request response |
+	| requestContext |
 	requestContext := self createRequestContextForURL: 'http://localhost/SVGTests'.
-	requestContext push: WAApplication new while: [ WACurrentRequestContext use: requestContext during: aBlock ]
+	requestContext push: WAApplication new during: [ WACurrentRequestContext use: requestContext during: aBlock ]
 ]
 
 { #category : #testing }
 SVGRenderingTest >> testDocumentHandler [
 
 	self setRequestContextWhile: [
-		WARenderCanvas builder render: [ : html | 
-			| canvas url component handler documentContext svg |
+		SVGCanvas builder render: [ : html | 
+			|  url component handler documentContext svg |
 			component := SVGXLineTest new.
 			url := html urlForEmbeddingSVGComponent: component.
 			self assert: url notNil.
