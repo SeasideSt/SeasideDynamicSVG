@@ -1,0 +1,34 @@
+Class {
+	#name : #SVGBuilder,
+	#superclass : #WABuilder,
+	#category : #'SeasideDynamicSVG-Core-Base'
+}
+
+{ #category : #rendering }
+SVGBuilder >> render: anObject [ 
+	"Render anObject and return the contents of the resulting Document as a String.
+	anObject must understand #renderOn:. Commonly anObject will be a one-argument
+	block, which will be evaluated with the appropriate renderer."
+	
+	^ self render: anObject withContext: WARenderContext new.
+]
+
+{ #category : #rendering }
+SVGBuilder >> render: anObject withContext: aWARenderContext [
+	"Render anObject and return the contents of the resulting Document as a String.
+	anObject must understand #renderOn:. Commonly anObject will be a one-argument
+	block, which will be evaluated with the appropriate renderer."
+	
+	^ String streamContents: [ :stream |
+		| context document renderer |
+		document := self documentClass on: stream codec: self codec.
+		document scriptGenerator: self scriptGeneratorClass new.
+		context := aWARenderContext.
+		context document: document.
+		context actionUrl: self actionUrl; resourceUrl: self resourceUrl.
+		renderer := self rendererClass context: context.
+		
+		self openDocument: document context: context.
+		renderer render: anObject; flush.
+		self closeDocument: document ]
+]

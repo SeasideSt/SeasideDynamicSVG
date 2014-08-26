@@ -8,7 +8,10 @@ Class {
 SVGUserAgentAdaptor class >> adaptorForAgent: userAgentOrNil [
 
 	| adaptorClass | 
-	adaptorClass := self allSubclasses detect: [ : subclass | subclass matchesSpecialAgent: userAgentOrNil ] ifNone: [ nil].
+	userAgentOrNil  ifNotNil: [
+		adaptorClass := self allSubclasses 
+			detect: [ : subclass |
+				subclass matchesSpecialAgent: userAgentOrNil ] ifNone: [ nil]].
 	^ adaptorClass notNil
 		ifTrue: [ adaptorClass new ]
 		ifFalse: [ SVGXHTMLBrowserAdaptor new ]

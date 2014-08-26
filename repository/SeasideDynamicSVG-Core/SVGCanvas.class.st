@@ -9,7 +9,7 @@ Class {
 
 { #category : #'instance creation' }
 SVGCanvas class >> builder [
-	^ super builder
+	^ (SVGBuilder on: self)
 			rootClass: SVGRoot;
 			documentClass: WAHtmlDocument;
 			yourself
