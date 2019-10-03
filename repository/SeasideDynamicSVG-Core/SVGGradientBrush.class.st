@@ -39,8 +39,8 @@ SVGGradientBrush >> reflect [
 ]
 
 { #category : #'convenience-spread method' }
-SVGGradientBrush >> repeat [ 
-
+SVGGradientBrush >> repeatSVG [
+"GemStone 3.5 + has reserved the #repeat selector so we cannot use it"
 	self spreadMethod: 'repeat'
 ]
 
